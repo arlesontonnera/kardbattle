@@ -1,5 +1,6 @@
 #include <QCoreApplication>
 #include <iostream>
+
 #include "card.h"
 #include "deck.h"
 #include "board.h"
