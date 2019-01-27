@@ -1,45 +1,50 @@
 #ifndef CARD_H
 #define CARD_H
 
-#include <QObject>
-#include <string>
+#include <vector>
 
-using namespace std;
+enum class Card_element  {None, Fire, Ice, Poison};
+enum class Card_status  {None, Burned, Frozen, Poisoned};
+enum Card_attack_orientation  {Top, Right, Botton, Left};
 
-enum class Element  {NEUTRAL, FIRE, ICE, POISON};
-enum class Status  {NEUTRAL, FIREFIGHTER, FROZEN, POISONED};
-enum class AttackOrientation  {TOP, BOTTOM, LEFT, RIGHT};
-enum class OrientationStatus  {OFF, NORMAL, INVERTED};
+typedef std::vector<Card_attack_orientation> attack_orientation;
 
 class Card
 {
-private:
-    struct attackOrientationStruct {
-        OrientationStatus topOrientationStatus;
-        OrientationStatus bottomOrientationStatus;
-        OrientationStatus leftOrientationStatus;
-        OrientationStatus rightOrientationStatus;
-    };
-
-    unsigned int m_power;
-    attackOrientationStruct m_attackOrientation;
-    Element m_element;
-    Status m_status;
 public:
     Card();
-    void setPower(unsigned int power);
-    void setElement(Element elementlementlement);
-    void setStatus(Status status);
-    void setAttackOrientation(AttackOrientation attackOrientation,
-                              OrientationStatus orientationStatus);
+    Card(const int power, attack_orientation attackDirection, const Card_element element,
+         const Card_status status);
 
-    unsigned int getPower();
-    Element getElement();
-    string getElement_Str();
-    Status getStatus();
-    string getStatus_Str();
-    OrientationStatus getAttackOrientationStatus(AttackOrientation attackOrientation);
-    string getAttackOrientationStatus_Str(AttackOrientation attackOrientation);
+    Card getCard() const;
+    void setCard(const int power, const attack_orientation &attack_direction);
+    void setCard(const int power, const attack_orientation &attack_direction, const Card_element &element);
+    void setCard(const int power, const attack_orientation &attack_direction, const Card_element &element,
+                 const Card_status &status);
+
+    Card makeNeutralCard();
+    Card makeRandomCard();
+
+    int getPower() const;
+    void setPower(const int power);
+
+    void powerIncrement();
+    void powerDecrement();
+
+    attack_orientation getAttack_direction() const;
+    void setAttack_direction(const attack_orientation &attack_direction);
+
+    Card_element getElement() const;
+    void setElement(const Card_element &element);
+
+    Card_status getStatus() const;
+    void setStatus(const Card_status &status);
+
+private:
+    int m_power;
+    std::vector<Card_attack_orientation> m_attack_direction;
+    Card_element m_element;
+    Card_status m_status;
 };
 
 #endif // CARD_H
