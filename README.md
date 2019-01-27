@@ -1,2 +1,2 @@
 # kardbattle
-Jogo de batalha de cartas
+Battle of cards game.
