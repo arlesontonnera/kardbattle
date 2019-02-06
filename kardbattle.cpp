@@ -2,16 +2,22 @@
 
 #include <iostream>
 
-#include "card.h"
+#include "deck.h"
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
 
-    Card m_card;
+    Deck m_deck(15);
 
-    std::cout << m_card.makeNeutralCard();
+    auto deckSize = m_deck.size();
+
+    for (size_t i = 0; i < deckSize; ++i) {
+        std::cout << m_deck.top();
+        m_deck.pop();
+    }
+
 
 //    return a.exec(); // Main loop
     return 0;
