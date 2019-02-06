@@ -4,8 +4,6 @@
 
 #include <cmath>
 
-using namespace std;
-
 BoardElement::BoardElement(const int index, const int row, const int column)
     : m_isPlaced(false)
     , m_card(nullptr)
@@ -18,7 +16,7 @@ BoardElement::BoardElement(const int index, const int row, const int column)
 
 int BoardElement::rowPosition()
 {
-    return static_cast<int>(ceil(m_index / static_cast<float>(m_row)));
+    return static_cast<int>(std::ceil(m_index / static_cast<float>(m_row)));
 }
 
 int BoardElement::columnPosition()
@@ -95,38 +93,22 @@ bool BoardElement::isEdge()
 
 bool BoardElement::isTop()
 {
-    if (rowPosition() == 0) {
-        return true;
-    }
-
-    return false;
+    return (rowPosition() == 0);
 }
 
 bool BoardElement::isBotton()
 {
-    if (rowPosition() == m_row - 1) {
-        return true;
-    }
-
-    return false;
+    return (rowPosition() == m_row - 1);
 }
 
 bool BoardElement::isLeft()
 {
-    if (columnPosition() == 0) {
-        return true;
-    }
-
-    return false;
+    return (columnPosition() == 0);
 }
 
 bool BoardElement::isRight()
 {
-    if (columnPosition() == m_column - 1) {
-        return true;
-    }
-
-    return false;
+    return (columnPosition() == m_column - 1);
 }
 
 int BoardElement::topIndex()
@@ -151,46 +133,18 @@ int BoardElement::rightIndex()
 
 void BoardElement::setEdgePosition()
 {
-    if (!isEdge()) {
-        m_edgePosition = EdgePosition::MiddleMiddle;
-    }
-    else {
-        if (isTop()) {
-            if (isLeft()) {
-                m_edgePosition = EdgePosition::TopLeft;
-            }
-            else if (isRight()) {
-                m_edgePosition = EdgePosition::TopRight;
-            }
-            else {
-                m_edgePosition = EdgePosition::TopMiddle;
-            }
-        }
-        else if (isBotton()) {
-            if (isLeft()) {
-                m_edgePosition = EdgePosition::BottonLeft;
-            }
-            else if (isRight()) {
-                m_edgePosition = EdgePosition::BottonRight;
-            }
-            else {
-                m_edgePosition = EdgePosition::BottonMiddle;
-            }
-        }
-        else {
-            if (isLeft()) {
-                m_edgePosition = EdgePosition::MiddleLeft;
-            }
-            else
-            {
-                m_edgePosition = EdgePosition::MiddleRight;
-            }
-        }
-    }
+    m_edgePosition =    !isEdge() ? EdgePosition::MiddleMiddle
+                        : isTop() and isLeft()  ? EdgePosition::TopLeft
+                        : isTop() and isRight() ? EdgePosition::TopRight
+                        : isTop() ? EdgePosition::TopMiddle
+
+                        : isBotton() and isLeft()   ? EdgePosition::BottonLeft
+                        : isBotton() and isRight()  ? EdgePosition::BottonRight
+                        : isBotton() ? EdgePosition::BottonMiddle
+
+                        : isLeft() ?        EdgePosition::MiddleLeft
+                        : /* isRight() */   EdgePosition::MiddleRight;
 }
-
-
-
 
 Board::Board(const int row, const int column)
     : m_row(row)
@@ -207,9 +161,5 @@ Board::Board(const int row, const int column)
 
 bool Board::isFull()
 {
-    if (m_boardElement.size() >= static_cast<size_t>(m_row * m_column)) {
-        return true;
-    }
-
-    return false;
+    return (m_boardElement.size() >= static_cast<size_t>(m_row * m_column));
 }

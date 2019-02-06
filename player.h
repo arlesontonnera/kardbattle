@@ -17,12 +17,6 @@ public:
     void addScore();
     void subtractScore();
 
-    Player &operator ++();
-    Player operator ++(int);
-
-    Player &operator --();
-    Player operator --(int);
-
 private:
     QString m_name;
     int m_score;

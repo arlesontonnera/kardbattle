@@ -1,7 +1,5 @@
 #include "display.h"
 
-using namespace std;
-
 void set_cursor_position(const int m_x, const int m_y)
 {
 #ifdef _WIN32

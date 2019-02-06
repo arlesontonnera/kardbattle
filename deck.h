@@ -3,21 +3,17 @@
 
 #include "card.h"
 
-#include <QObject>
-
 #include <stack>
 
 class Deck
 {
 public:
     Deck(const int deck_size);
-    ~Deck();
 
-    void popCard();
-    Card topCard() const;
-
-signals:
-    void cardPopped();
+    void pop();
+    size_t size();
+    Card top();
+    bool empty();
 
 private:
     std::stack<Card> m_cards;
