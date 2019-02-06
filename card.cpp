@@ -1,16 +1,17 @@
 #include "card.h"
 
 #include <random>
+#include <iostream>
 
 using namespace std;
 
 Card::Card()
-    :Card(0, vector<Card_attack_orientation>{}, Card_element::None, Card_status::None)
+    :Card(0, attack_orientation{Card_attack_orientation::None}, Card_element::None, Card_status::None)
 {
 
 }
 
-Card::Card(const int power, vector<Card_attack_orientation> attackDirection, const Card_element element,
+Card::Card(const int power, attack_orientation attackDirection, const Card_element element,
            const Card_status status)
     : m_power(power)
     , m_attack_direction(attackDirection)
@@ -20,7 +21,7 @@ Card::Card(const int power, vector<Card_attack_orientation> attackDirection, con
 
 }
 
-Card Card::getCard() const
+Card& Card::getCard()
 {
     return *this;
 }
@@ -45,11 +46,15 @@ void Card::setCard(const int power, const attack_orientation &attack_direction, 
 
 Card Card::makeNeutralCard()
 {
-    return Card(0, vector<Card_attack_orientation>{}, Card_element::None, Card_status::None);
+    return Card(0, attack_orientation{Card_attack_orientation::None}, Card_element::None, Card_status::None);
 }
 
 Card Card::makeRandomCard()
 {
+
+    // TODO
+    // Conferir essa função, escrevi mas não pude testar antes de arrumar o restante do código
+
     random_device rd;
     mt19937 gen(rd());
 
@@ -63,12 +68,16 @@ Card Card::makeRandomCard()
     for (int i = 0; i < attack_size; ++i) {
 
         int r = 0;
+        bool test = false;
+        do {
+            r = attack_r(gen);
+            auto f = find_if(attack.begin(), attack.end(), [=](int i){
+                return (r == i);
+            });
 
-        r = attack_r(gen);
-        auto f = find_if(attack.begin(), attack.end(), [=](int i){
-            return (r == i);
-        });
+            test = (f == attack.end());
 
+        } while (test);
 
 
         switch (r) {
@@ -96,12 +105,12 @@ Card Card::makeRandomCard()
 
 int Card::getPower() const
 {
-    return (m_power > 0) ? m_power : 0;
+    return m_power;
 }
 
 void Card::setPower(const int power)
 {
-    m_power = power;
+    m_power = (power > 0) ? power : 0;
 }
 
 void Card::powerIncrement()
@@ -146,114 +155,27 @@ void Card::setAttack_direction(const attack_orientation &attack_direction)
     m_attack_direction = attack_direction;
 }
 
+ostream& operator << (ostream &stream, const Card &card)
+{
+    stream << endl;
+    stream << "Power: " << card.getPower() << "\n";
 
+    for (size_t i = 0; i < card.getAttack_direction().size(); ++i) {
+        switch (i) {
+        case Card_attack_orientation::Top :
+            stream << "Element: Top\n";
+            break;
+        case Card_attack_orientation::Right :
+            stream << "Element: Right\n";
+            break;
+        case Card_attack_orientation::Botton :
+            stream << "Element: Botton\n";
+            break;
+        case Card_attack_orientation::Left :
+            stream << "Element: Left\n";
+            break;
+        }
+    }
 
-
-
-
-//void Card::setPower(size_t power)
-//{
-//    m_power = power;
-//}
-
-//void Card::setElement(Element element)
-//{
-//    m_element = element;
-//}
-
-//Element Card::getElement() const
-//{
-
-//}
-
-//void Card::setStatus(Status status)
-//{
-//    m_status = status;
-//}
-
-//void Card::setAttackOrientation(AttackOrientation attackOrientation,
-//                                OrientationStatus orientationStatus)
-//{
-
-//    switch(attackOrientation)
-//    {
-//    case AttackOrientation::TOP: m_attackOrientation.topOrientationStatus
-//                = orientationStatus; break;
-//    case AttackOrientation::BOTTOM: m_attackOrientation.bottomOrientationStatus
-//                = orientationStatus; break;
-//    case AttackOrientation::LEFT: m_attackOrientation.leftOrientationStatus
-//                = orientationStatus; break;
-//    case AttackOrientation::RIGHT: m_attackOrientation.rightOrientationStatus
-//                = orientationStatus;
-//    }
-//}
-
-//size_t Card::getPower() const
-//{
-//    return m_power;
-//}
-
-//Element Card::getElement()
-//{
-//    return m_element;
-//}
-
-//string Card::getElement_Str()
-//{
-//    string str;
-//    switch(m_element)
-//    {
-//    case Element::NEUTRAL: str = "NEUTRAL"; break;
-//    case Element::FIRE: str =  "FIRE"; break;
-//    case Element::ICE: str =  "ICE"; break;
-//    case Element::POISON: str =  "POISON";
-//    }
-//    return str;
-//}
-
-//Status Card::getStatus() const
-//{
-//    return m_status;
-//}
-
-//string Card::getStatus_Str()
-//{
-//    string str;
-//    switch(m_status)
-//    {
-//    case Status::NEUTRAL: str = "NEUTRAL"; break;
-//    case Status::FIREFIGHTER: str =  "FIREFIGHTER"; break;
-//    case Status::FROZEN: str =  "FROZEN"; break;
-//    case Status::POISONED: str =  "POISONED";
-//    }
-//    return str;
-//}
-
-//OrientationStatus Card::getAttackOrientationStatus(AttackOrientation attackOrientation)
-//{
-//    OrientationStatus orientationStatus;
-//    switch(attackOrientation)
-//    {
-//    case AttackOrientation::TOP:
-//        orientationStatus = m_attackOrientation.topOrientationStatus; break;
-//    case AttackOrientation::BOTTOM:
-//        orientationStatus = m_attackOrientation.bottomOrientationStatus; break;
-//    case AttackOrientation::LEFT:
-//        orientationStatus = m_attackOrientation.leftOrientationStatus; break;
-//    case AttackOrientation::RIGHT:
-//        orientationStatus = m_attackOrientation.rightOrientationStatus;
-//    }
-//    return orientationStatus;
-//}
-
-//string Card::getAttackOrientationStatus_Str(AttackOrientation attackOrientation)
-//{
-//    string orientationStatusString;
-//    switch(getAttackOrientationStatus(attackOrientation))
-//    {
-//    case OrientationStatus::OFF: orientationStatusString = "OFF"; break;
-//    case OrientationStatus::NORMAL: orientationStatusString = "NORMAL"; break;
-//    case OrientationStatus::INVERTED: orientationStatusString = "INVERTED";
-//    }
-//    return orientationStatusString;
-//}
+    return stream;
+}

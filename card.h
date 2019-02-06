@@ -5,9 +5,9 @@
 
 enum class Card_element  {None, Fire, Ice, Poison};
 enum class Card_status  {None, Burned, Frozen, Poisoned};
-enum Card_attack_orientation  {Top, Right, Botton, Left};
+enum Card_attack_orientation  {None, Top, Right, Botton, Left};
 
-typedef std::vector<Card_attack_orientation> attack_orientation;
+using attack_orientation = std::vector<Card_attack_orientation>;
 
 class Card
 {
@@ -16,7 +16,7 @@ public:
     Card(const int power, attack_orientation attackDirection, const Card_element element,
          const Card_status status);
 
-    Card getCard() const;
+    Card& getCard();
     void setCard(const int power, const attack_orientation &attack_direction);
     void setCard(const int power, const attack_orientation &attack_direction, const Card_element &element);
     void setCard(const int power, const attack_orientation &attack_direction, const Card_element &element,
@@ -39,6 +39,8 @@ public:
 
     Card_status getStatus() const;
     void setStatus(const Card_status &status);
+
+    friend std::ostream& operator << (std::ostream &stream, const Card &card);
 
 private:
     int m_power;
