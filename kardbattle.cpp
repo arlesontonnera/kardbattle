@@ -1,29 +1,18 @@
 #include <QCoreApplication>
+
 #include <iostream>
 
 #include "card.h"
-#include "deck.h"
-#include "board.h"
-#include "display.h"
-
-using namespace std;
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    Deck cards(30);
-    Board board(3, 3);
 
-    board.setBoardData(cards, 1, 1);
-    board.setBoardData(cards, 1, 2);
-    board.setBoardData(cards, 0, 0);
-    board.setBoardData(cards, 2, 2);
+    Card m_card;
 
-    Display display(cards, board);
-    //display.showDeckData();
-    display.displayBoard();
-    display.displayPopCard();
+    std::cout << m_card.makeNeutralCard();
 
-    return a.exec();
+//    return a.exec(); // Main loop
+    return 0;
 }
