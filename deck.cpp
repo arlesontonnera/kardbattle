@@ -8,4 +8,15 @@ Deck::Deck(const int deck_size)
     }
 }
 
+void Deck::popCard()
+{
+    m_cards.pop();
+    emit cardPopped();
+}
+
+Card Deck::topCard() const
+{
+    return m_cards.top();
+}
+
 
