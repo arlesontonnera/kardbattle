@@ -1,69 +1,215 @@
 #include "board.h"
 
+#include <QtGlobal>
+
+#include <cmath>
+
 using namespace std;
 
-Board::Board(unsigned int lines, unsigned int columns)
+BoardElement::BoardElement(const int index, const int row, const int column)
+    : m_isPlaced(false)
+    , m_card(nullptr)
+    , m_index(index)
+    , m_row(row)
+    , m_column(column)
 {
-    m_boardLines = lines;
-    m_boardColumns = columns;
-    m_boardCards.resize(m_boardLines, vector<BoardElement>(m_boardColumns));
+    makeAdjacents();
 }
 
-void Board::setBoardData(Deck &cards, unsigned int line, unsigned int column)
+int BoardElement::rowPosition()
 {
-    m_boardCards[line][column].isPlaced = true;
-    m_boardCards[line][column].index = cards.getPopCardIndex();
-    m_boardCards[line][column].card.setPower
-            (cards.getCards()[cards.getPopCardIndex()].getPower());
-    m_boardCards[line][column].card.setElement
-            (cards.getCards()[cards.getPopCardIndex()].getElement());
-    m_boardCards[line][column].card.setStatus
-            (cards.getCards()[cards.getPopCardIndex()].getStatus());
-    m_boardCards[line][column].card.setAttackOrientation
-            (AttackOrientation::TOP, cards.getCards()[cards.getPopCardIndex()].
-            getAttackOrientationStatus(AttackOrientation::TOP));
-    m_boardCards[line][column].card.setAttackOrientation
-            (AttackOrientation::BOTTOM, cards.getCards()[cards.getPopCardIndex()].
-            getAttackOrientationStatus(AttackOrientation::BOTTOM));
-    m_boardCards[line][column].card.setAttackOrientation
-            (AttackOrientation::LEFT, cards.getCards()[cards.getPopCardIndex()].
-            getAttackOrientationStatus(AttackOrientation::LEFT));
-    m_boardCards[line][column].card.setAttackOrientation
-            (AttackOrientation::RIGHT, cards.getCards()[cards.getPopCardIndex()].
-            getAttackOrientationStatus(AttackOrientation::RIGHT));
-    cards.decrementTopCardIndex();
+    return static_cast<int>(ceil(m_index / static_cast<float>(m_row)));
 }
 
-vector<vector<Board::BoardElement>> Board::getBoardCards()
+int BoardElement::columnPosition()
 {
-    return m_boardCards;
+    return m_index % m_column;
 }
 
-unsigned int Board::getBoardLines()
+void BoardElement::makeAdjacents()
 {
-    return m_boardLines;
-}
+    setEdgePosition();
 
-unsigned int Board::getBoardColumns()
-{
-    return m_boardColumns;
-}
+    switch (m_edgePosition) {
+    case EdgePosition::MiddleMiddle:
+        m_adjacents.push_back(topIndex());
+        m_adjacents.push_back(bottonIndex());
+        m_adjacents.push_back(leftIndex());
+        m_adjacents.push_back(rightIndex());
+        break;
 
-Board::BoardElement Board::getAdjacentCard(AttackOrientation attackOrientation,
-                                           unsigned int line, unsigned int column)
-{
-    BoardElement adjacentCard;
-    switch (attackOrientation)
-    {
-    case AttackOrientation::TOP: if(line > 0)
-            adjacentCard = m_boardCards[line - 1][column];
-    case AttackOrientation::BOTTOM: if(line < m_boardLines - 1)
-            adjacentCard = m_boardCards[line + 1][column];
-    case AttackOrientation::LEFT: if(column > 0)
-            adjacentCard = m_boardCards[line][column - 1];
-    case AttackOrientation::RIGHT: if(column < m_boardColumns - 1)
-            adjacentCard = m_boardCards[line][column + 1];
+    case EdgePosition::TopLeft:
+        m_adjacents.push_back(bottonIndex());
+        m_adjacents.push_back(rightIndex());
+        break;
+
+    case EdgePosition::TopMiddle:
+        m_adjacents.push_back(bottonIndex());
+        m_adjacents.push_back(leftIndex());
+        m_adjacents.push_back(rightIndex());
+        break;
+
+    case EdgePosition::TopRight:
+        m_adjacents.push_back(bottonIndex());
+        m_adjacents.push_back(leftIndex());
+        break;
+
+    case EdgePosition::MiddleLeft:
+        m_adjacents.push_back(topIndex());
+        m_adjacents.push_back(bottonIndex());
+        m_adjacents.push_back(rightIndex());
+        break;
+
+    case EdgePosition::MiddleRight:
+        m_adjacents.push_back(topIndex());
+        m_adjacents.push_back(bottonIndex());
+        m_adjacents.push_back(leftIndex());
+        break;
+
+    case EdgePosition::BottonLeft:
+        m_adjacents.push_back(topIndex());
+        m_adjacents.push_back(rightIndex());
+        break;
+
+    case EdgePosition::BottonMiddle:
+        m_adjacents.push_back(topIndex());
+        m_adjacents.push_back(leftIndex());
+        m_adjacents.push_back(rightIndex());
+        break;
+
+    case EdgePosition::BottonRight:
+        m_adjacents.push_back(topIndex());
+        m_adjacents.push_back(leftIndex());
+        break;
     }
-    return adjacentCard;
 }
 
+bool BoardElement::isEdge()
+{
+    if (isTop() or isBotton() or isLeft() or isRight()) {
+        return true;
+    }
+
+    return false;
+}
+
+bool BoardElement::isTop()
+{
+    if (rowPosition() == 0) {
+        return true;
+    }
+
+    return false;
+}
+
+bool BoardElement::isBotton()
+{
+    if (rowPosition() == m_row - 1) {
+        return true;
+    }
+
+    return false;
+}
+
+bool BoardElement::isLeft()
+{
+    if (columnPosition() == 0) {
+        return true;
+    }
+
+    return false;
+}
+
+bool BoardElement::isRight()
+{
+    if (columnPosition() == m_column - 1) {
+        return true;
+    }
+
+    return false;
+}
+
+int BoardElement::topIndex()
+{
+    return m_index - m_column;
+}
+
+int BoardElement::bottonIndex()
+{
+    return m_index + m_column;
+}
+
+int BoardElement::leftIndex()
+{
+    return m_index - 1;
+}
+
+int BoardElement::rightIndex()
+{
+    return m_index + 1;
+}
+
+void BoardElement::setEdgePosition()
+{
+    if (!isEdge()) {
+        m_edgePosition = EdgePosition::MiddleMiddle;
+    }
+    else {
+        if (isTop()) {
+            if (isLeft()) {
+                m_edgePosition = EdgePosition::TopLeft;
+            }
+            else if (isRight()) {
+                m_edgePosition = EdgePosition::TopRight;
+            }
+            else {
+                m_edgePosition = EdgePosition::TopMiddle;
+            }
+        }
+        else if (isBotton()) {
+            if (isLeft()) {
+                m_edgePosition = EdgePosition::BottonLeft;
+            }
+            else if (isRight()) {
+                m_edgePosition = EdgePosition::BottonRight;
+            }
+            else {
+                m_edgePosition = EdgePosition::BottonMiddle;
+            }
+        }
+        else {
+            if (isLeft()) {
+                m_edgePosition = EdgePosition::MiddleLeft;
+            }
+            else
+            {
+                m_edgePosition = EdgePosition::MiddleRight;
+            }
+        }
+    }
+}
+
+
+
+
+Board::Board(const int row, const int column)
+    : m_row(row)
+    , m_column(column)
+{
+    Q_ASSERT_X(row <= 0 or column <= 0, "Board Constructor", "Rows or Columns has a value zero or smaller");
+
+    auto boardSize = row * column;
+
+    for (auto i = 0; i < boardSize; ++i) {
+        m_boardElement.push_back(BoardElement(i, row, column));
+    }
+}
+
+bool Board::isFull()
+{
+    if (m_boardElement.size() >= static_cast<size_t>(m_row * m_column)) {
+        return true;
+    }
+
+    return false;
+}

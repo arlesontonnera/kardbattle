@@ -2,34 +2,27 @@
 
 using namespace std;
 
+void set_cursor_position(const int m_x, const int m_y)
+{
+#ifdef _WIN32
+#include <windows.h>
+    HANDLE Screen;
+    Screen = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD Position={m_x, m_y};
+    SetConsoleCursorPosition(Screen, Position);
+#else
+    printf("\033[%d;%dH", m_y, m_x);
+#endif
+}
+
+
+
 Display::Display(Deck cards, Board board) : m_cards(cards), m_board(board)
 {
 
 }
 
-void Display::showDeckData()
-{
-    for (unsigned int index = 0; index < m_cards.getCards().size(); index++) {
-        cout << "Card Number Index: " << index << endl;
-        cout << "Power: " << m_cards.getCards()[index].getPower() << endl;
-        cout << "Element: " << m_cards.getCards()[index].getElement_Str() << endl;
-        cout << "Status: " << m_cards.getCards()[index].getStatus_Str() << endl;
-        cout << "Top Orientation: "
-             << m_cards.getCards()[index].getAttackOrientationStatus_Str
-                (AttackOrientation::TOP) << endl;
-        cout << "Bottom Orientation: "
-             << m_cards.getCards()[index].getAttackOrientationStatus_Str
-                (AttackOrientation::BOTTOM) << endl;
-        cout << "Left Orientation: "
-             << m_cards.getCards()[index].getAttackOrientationStatus_Str
-                (AttackOrientation::LEFT) << endl;
-        cout << "Right Orientation: "
-             << m_cards.getCards()[index].getAttackOrientationStatus_Str
-                (AttackOrientation::RIGHT) << endl;
-        cout << string(30, '-') << endl;
-    }
-}
-
+/*
 void Display::displayPopCard()
 {
     unsigned int centerboard =
@@ -45,7 +38,7 @@ void Display::displayPopCard()
     string symbolTop;
     switch (static_cast <unsigned int>
             (m_cards.getCards()[m_cards.getPopCardIndex()].getAttackOrientationStatus
-             (AttackOrientation::TOP)))
+             (Card_attack_orientation::TOP)))
     {
     case 0: symbolTop = " "; break;
     case 1: symbolTop = "^"; break;
@@ -90,7 +83,7 @@ void Display::displayPopCard()
     string symbolLeft;
     switch(static_cast <unsigned int>(m_cards.getCards()[m_cards.getPopCardIndex()]
                                       .getAttackOrientationStatus
-                                      (AttackOrientation::LEFT)))
+                                      (Card_attack_orientation::LEFT)))
     {
     case 0: symbolLeft = " "; break;
     case 1: symbolLeft = "<"; break;
@@ -99,7 +92,7 @@ void Display::displayPopCard()
     string symbolRight;
     switch(static_cast <unsigned int>(m_cards.getCards()[m_cards.getPopCardIndex()]
                                       .getAttackOrientationStatus
-                                      (AttackOrientation::RIGHT)))
+                                      (Card_attack_orientation::RIGHT)))
     {
     case 0: symbolRight = " "; break;
     case 1: symbolRight = ">"; break;
@@ -132,7 +125,7 @@ void Display::displayPopCard()
     string symbolBottom;
     switch(static_cast <unsigned int>(m_cards.getCards()[m_cards.getPopCardIndex()]
                                       .getAttackOrientationStatus
-                                      (AttackOrientation::BOTTOM)))
+                                      (Card_attack_orientation::BOTTOM)))
     {
     case 0: symbolBottom = " "; break;
     case 1: symbolBottom = "v"; break;
@@ -167,7 +160,7 @@ void Display::displayBoard()
                 string symbolTop;
                 switch (static_cast <unsigned int>
                         (m_board.getBoardCards()[line][column].card.
-                         getAttackOrientationStatus(AttackOrientation::TOP)))
+                         getAttackOrientationStatus(Card_attack_orientation::TOP)))
                 {
                 case 0: symbolTop = " "; break;
                 case 1: symbolTop = "^"; break;
@@ -262,7 +255,7 @@ void Display::displayBoard()
                 string symbolLeft;
                 switch(static_cast <unsigned int>
                        (m_board.getBoardCards()[line][column]
-                        .card.getAttackOrientationStatus(AttackOrientation::LEFT)))
+                        .card.getAttackOrientationStatus(Card_attack_orientation::LEFT)))
                 {
                 case 0: symbolLeft = " "; break;
                 case 1: symbolLeft = "<"; break;
@@ -271,7 +264,7 @@ void Display::displayBoard()
                 string symbolRight;
                 switch(static_cast <unsigned int>
                        (m_board.getBoardCards()[line][column]
-                        .card.getAttackOrientationStatus(AttackOrientation::RIGHT)))
+                        .card.getAttackOrientationStatus(Card_attack_orientation::RIGHT)))
                 {
                 case 0: symbolRight = " "; break;
                 case 1: symbolRight = ">"; break;
@@ -347,7 +340,7 @@ void Display::displayBoard()
                 string symbolBottom;
                 switch(static_cast <unsigned int>
                        (m_board.getBoardCards()[line][column]
-                        .card.getAttackOrientationStatus(AttackOrientation::BOTTOM)))
+                        .card.getAttackOrientationStatus(Card_attack_orientation::BOTTOM)))
                 {
                 case 0: symbolBottom = " "; break;
                 case 1: symbolBottom = "v"; break;
@@ -374,3 +367,4 @@ void Display::displayBoard()
         cout << endl << endl;
     }
 }
+*/
