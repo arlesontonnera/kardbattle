@@ -7,7 +7,7 @@ Deck::Deck(const int deck_size)
     for(auto i = 0; i < deck_size; ++i)
     {
         Card c;
-        m_cards.push(c.makeRandomCard());
+        m_cards.push(c.getRandomCard());
     }
 }
 

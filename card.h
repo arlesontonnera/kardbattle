@@ -4,38 +4,39 @@
 #include <vector>
 #include <random>
 
+enum class Card_attack_direction {Top, Right, Bottom, Left};
 enum class Card_element {None, Fire, Ice, Poison};
 enum class Card_status  {None, Burned, Frozen, Poisoned};
-enum class Card_attack_direction {Top, Right, Bottom, Left};
 
-using attackDir = std::vector<Card_attack_direction>;
+using AttackDirection = std::vector<Card_attack_direction>;
 
 class Card
 {
 public:
     Card();
-    Card(const int power, const attackDir &attackDirection, const Card_element &element, const Card_status &status);
+    Card(const int power, const AttackDirection &attackDirection, const Card_element &element,
+         const Card_status &status);
 
-    void setCard(const int power, const attackDir &attackDirection = attackDir{},
+    void setCard(const int power, const AttackDirection &attackDirection = AttackDirection{},
                  const Card_element &element = Card_element::None, const Card_status &status = Card_status::None);
 
-    Card makeNeutralCard();
-    Card makeRandomCard();
+    Card getNeutralCard();
+    Card getRandomCard();
 
-    int power() const;
     void setPower(const int power);
+    int getPower() const;
 
-    void powerIncrement();
-    void powerDecrement();
+    void setPowerIncrement();
+    void setPowerDecrement();
 
-    attackDir attackDirection() const;
-    void setAttackDirection(const attackDir &attackDirection);
+    void setAttackDirection(const AttackDirection &attackDirection);
+    AttackDirection getAttackDirection() const;
 
-    Card_element element() const;
     void setElement(const Card_element &element);
+    Card_element getElement() const;
 
-    Card_status status() const;
     void setStatus(const Card_status &status);
+    Card_status getStatus() const;
 
     friend std::ostream& operator << (std::ostream &stream, const Card &card);
 
@@ -45,9 +46,9 @@ private:
     Card_element m_element;
     Card_status m_status;
 
-    int randomPower();
-    Card_element randomElement();
-    attackDir randomDirection();
+    int getRandomPower();
+    Card_element getRandomElement();
+    AttackDirection getRandomDirection();
 };
 
 #endif // CARD_H
