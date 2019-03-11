@@ -133,17 +133,26 @@ int BoardElement::rightIndex()
 
 void BoardElement::setEdgePosition()
 {
-    m_edgePosition =    !isEdge() ? EdgePosition::MiddleMiddle
-                        : isTop() and isLeft()  ? EdgePosition::TopLeft
-                        : isTop() and isRight() ? EdgePosition::TopRight
-                        : isTop() ? EdgePosition::TopMiddle
+    m_edgePosition = !isEdge() ?
+                EdgePosition::MiddleMiddle
+              : isTop() and isLeft() ?
+                    EdgePosition::TopLeft
+                  : isTop() and isRight() ?
+                        EdgePosition::TopRight
+                      : isTop() ?
+                            EdgePosition::TopMiddle
 
-                        : isBotton() and isLeft()   ? EdgePosition::BottonLeft
-                        : isBotton() and isRight()  ? EdgePosition::BottonRight
-                        : isBotton() ? EdgePosition::BottonMiddle
+                          : isBotton() and isLeft() ?
+                                EdgePosition::BottonLeft
+                              : isBotton() and isRight() ?
+                                    EdgePosition::BottonRight
+                                  : isBotton() ?
+                                        EdgePosition::BottonMiddle
 
-                        : isLeft() ?        EdgePosition::MiddleLeft
-                        : /* isRight() */   EdgePosition::MiddleRight;
+                                      : isLeft() ?
+                                            EdgePosition::MiddleLeft
+                                          : /* isRight() */
+                                            EdgePosition::MiddleRight;
 }
 
 Board::Board(const int row, const int column)

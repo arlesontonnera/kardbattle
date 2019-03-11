@@ -7,9 +7,9 @@
 class Card;
 
 enum class EdgePosition : int {
-      TopLeft,      TopMiddle,      TopRight,
-      MiddleLeft,   MiddleMiddle,   MiddleRight,
-      BottonLeft,   BottonMiddle,   BottonRight
+    TopLeft,      TopMiddle,      TopRight,
+    MiddleLeft,   MiddleMiddle,   MiddleRight,
+    BottonLeft,   BottonMiddle,   BottonRight
 };
 
 struct BoardElement
@@ -17,7 +17,7 @@ struct BoardElement
     BoardElement(const int index, const int rowPosition, const int columnPosition);
 
     // Ainda estou em dúvida se será necessário esse m_isPlaced, pois o card é um ptr e inicia como nullptr
-    // Então podemos verificar se a posição X a card == nullptr assim não havaria necessidade da variável bool
+    // Então podemos verificar se a posição X a card == nullptr assim não haveria necessidade da variável bool
     bool m_isPlaced;
     std::shared_ptr<Card> m_card;
     std::vector<int> m_adjacents;
