@@ -2,12 +2,12 @@
 
 #include <iostream>
 
-Deck::Deck(const int deck_size)
+Deck::Deck(const int deckSize)
 {
-    for(auto i = 0; i < deck_size; ++i)
+    for(auto i = 0; i < deckSize; ++i)
     {
-        Card c;
-        m_cards.push(c.getRandomCard());
+        Card card;
+        m_cards.push(card.getRandomCard());
     }
 }
 
@@ -16,7 +16,7 @@ void Deck::pop()
     m_cards.pop();
 }
 
-size_t Deck::size()
+size_t Deck::getSize()
 {
     return m_cards.size();
 }
@@ -27,7 +27,7 @@ Card Deck::top()
 
 }
 
-bool Deck::empty()
+bool Deck::isEmpty()
 {
     return m_cards.empty();
 }

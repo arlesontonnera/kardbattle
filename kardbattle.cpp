@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 
     Deck m_deck(15);
 
-    auto deckSize = m_deck.size();
+    auto deckSize = m_deck.getSize();
 
     for (size_t i = 0; i < deckSize; ++i) {
         std::cout << m_deck.top();

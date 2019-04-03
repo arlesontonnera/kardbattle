@@ -8,12 +8,12 @@
 class Deck
 {
 public:
-    Deck(const int deck_size);
+    Deck(const int deckSize);
 
     void pop();
-    size_t size();
+    size_t getSize();
     Card top();
-    bool empty();
+    bool isEmpty();
 
 private:
     std::stack<Card> m_cards;
