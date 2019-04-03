@@ -29,8 +29,8 @@ private:
 
     EdgePosition m_edgePosition;
 
-    int rowPosition();
-    int columnPosition();
+    int getRowPosition();
+    int getColumnPosition();
 
     void makeAdjacents();
 
@@ -41,10 +41,10 @@ private:
     bool isLeft();
     bool isRight();
 
-    int topIndex();
-    int bottonIndex();
-    int leftIndex();
-    int rightIndex();
+    int getTopIndex();
+    int getBottonIndex();
+    int getLeftIndex();
+    int getRightIndex();
 
     void setEdgePosition();
 };
@@ -52,13 +52,13 @@ private:
 class Board
 {
 public:
-    Board(const int row, const int column);
+    Board(const int rows, const int columns);
 
     bool isFull();
 private:
-    int m_row;
-    int m_column;
-    std::vector<BoardElement> m_boardElement;
+    int m_rows;
+    int m_columns;
+    std::vector<BoardElement> m_boardElements;
 };
 
 #endif // BOARD_H
