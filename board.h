@@ -32,8 +32,6 @@ private:
     int getRowPosition();
     int getColumnPosition();
 
-    void makeAdjacents();
-
     bool isEdge();
 
     bool isTop();
@@ -47,6 +45,7 @@ private:
     int getRightIndex();
 
     void setEdgePosition();
+    void makeAdjacents();
 };
 
 class Board

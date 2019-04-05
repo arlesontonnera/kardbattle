@@ -24,71 +24,9 @@ int BoardElement::getColumnPosition()
     return m_index % m_column;
 }
 
-void BoardElement::makeAdjacents()
-{
-    setEdgePosition();
-
-    switch (m_edgePosition) {
-    case EdgePosition::MiddleMiddle:
-        m_adjacents.push_back(getTopIndex());
-        m_adjacents.push_back(getBottonIndex());
-        m_adjacents.push_back(getLeftIndex());
-        m_adjacents.push_back(getRightIndex());
-        break;
-
-    case EdgePosition::TopLeft:
-        m_adjacents.push_back(getBottonIndex());
-        m_adjacents.push_back(getRightIndex());
-        break;
-
-    case EdgePosition::TopMiddle:
-        m_adjacents.push_back(getBottonIndex());
-        m_adjacents.push_back(getLeftIndex());
-        m_adjacents.push_back(getRightIndex());
-        break;
-
-    case EdgePosition::TopRight:
-        m_adjacents.push_back(getBottonIndex());
-        m_adjacents.push_back(getLeftIndex());
-        break;
-
-    case EdgePosition::MiddleLeft:
-        m_adjacents.push_back(getTopIndex());
-        m_adjacents.push_back(getBottonIndex());
-        m_adjacents.push_back(getRightIndex());
-        break;
-
-    case EdgePosition::MiddleRight:
-        m_adjacents.push_back(getTopIndex());
-        m_adjacents.push_back(getBottonIndex());
-        m_adjacents.push_back(getLeftIndex());
-        break;
-
-    case EdgePosition::BottonLeft:
-        m_adjacents.push_back(getTopIndex());
-        m_adjacents.push_back(getRightIndex());
-        break;
-
-    case EdgePosition::BottonMiddle:
-        m_adjacents.push_back(getTopIndex());
-        m_adjacents.push_back(getLeftIndex());
-        m_adjacents.push_back(getRightIndex());
-        break;
-
-    case EdgePosition::BottonRight:
-        m_adjacents.push_back(getTopIndex());
-        m_adjacents.push_back(getLeftIndex());
-        break;
-    }
-}
-
 bool BoardElement::isEdge()
 {
-    if (isTop() or isBotton() or isLeft() or isRight()) {
-        return true;
-    }
-
-    return false;
+    return (isTop() or isBotton() or isLeft() or isRight());
 }
 
 bool BoardElement::isTop()
@@ -153,6 +91,64 @@ void BoardElement::setEdgePosition()
                                             EdgePosition::MiddleLeft
                                           : /* isRight() */
                                             EdgePosition::MiddleRight;
+}
+
+void BoardElement::makeAdjacents()
+{
+    setEdgePosition();
+
+    switch (m_edgePosition) {
+    case EdgePosition::MiddleMiddle:
+        m_adjacents.push_back(getTopIndex());
+        m_adjacents.push_back(getBottonIndex());
+        m_adjacents.push_back(getLeftIndex());
+        m_adjacents.push_back(getRightIndex());
+        break;
+
+    case EdgePosition::TopLeft:
+        m_adjacents.push_back(getBottonIndex());
+        m_adjacents.push_back(getRightIndex());
+        break;
+
+    case EdgePosition::TopMiddle:
+        m_adjacents.push_back(getBottonIndex());
+        m_adjacents.push_back(getLeftIndex());
+        m_adjacents.push_back(getRightIndex());
+        break;
+
+    case EdgePosition::TopRight:
+        m_adjacents.push_back(getBottonIndex());
+        m_adjacents.push_back(getLeftIndex());
+        break;
+
+    case EdgePosition::MiddleLeft:
+        m_adjacents.push_back(getTopIndex());
+        m_adjacents.push_back(getBottonIndex());
+        m_adjacents.push_back(getRightIndex());
+        break;
+
+    case EdgePosition::MiddleRight:
+        m_adjacents.push_back(getTopIndex());
+        m_adjacents.push_back(getBottonIndex());
+        m_adjacents.push_back(getLeftIndex());
+        break;
+
+    case EdgePosition::BottonLeft:
+        m_adjacents.push_back(getTopIndex());
+        m_adjacents.push_back(getRightIndex());
+        break;
+
+    case EdgePosition::BottonMiddle:
+        m_adjacents.push_back(getTopIndex());
+        m_adjacents.push_back(getLeftIndex());
+        m_adjacents.push_back(getRightIndex());
+        break;
+
+    case EdgePosition::BottonRight:
+        m_adjacents.push_back(getTopIndex());
+        m_adjacents.push_back(getLeftIndex());
+        break;
+    }
 }
 
 Board::Board(const int rows, const int columns)
