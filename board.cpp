@@ -155,15 +155,16 @@ Board::Board(const int rows, const int columns)
     : m_rows(rows)
     , m_columns(columns)
 {
-    Q_ASSERT_X(rows <= 0 or columns <= 0, "Board Constructor", "Rows or Columns has a value zero or smaller");
+    Q_ASSERT_X(m_rows <= 0 || m_columns <= 0, "Board Constructor", "Rows or Columns has a value zero or smaller");
 
-    auto boardSize = rows * columns;
+    auto index{0};
 
-    for (auto i = 0; i < boardSize; ++i) {
-        m_boardElements.push_back(BoardElement(i, rows, columns));
+    for (auto r = 1; r <= m_rows; ++r) {
+        for (auto c = 1; c <= m_columns; ++c) {
+            m_boardElements.push_back(BoardElement(index++, r, c));
+        }
     }
 }
-
 bool Board::isFull()
 {
     return (m_boardElements.size() >= static_cast<size_t>(m_rows * m_columns));
