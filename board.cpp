@@ -4,24 +4,24 @@
 
 #include <cmath>
 
-BoardElement::BoardElement(const int index, const int row, const int column)
+BoardElement::BoardElement(const int index, const int rows, const int columns)
     : m_isPlaced(false)
     , m_card(nullptr)
     , m_index(index)
-    , m_row(row)
-    , m_column(column)
+    , m_rows(rows)
+    , m_columns(columns)
 {
     makeAdjacents();
 }
 
-int BoardElement::getRowPosition()
+int BoardElement::getRow()
 {
-    return static_cast<int>(std::ceil(m_index / static_cast<float>(m_row)));
+    return static_cast<int>(std::ceil(m_index / static_cast<float>(m_rows)));
 }
 
-int BoardElement::getColumnPosition()
+int BoardElement::getColumn()
 {
-    return m_index % m_column;
+    return m_index % m_columns;
 }
 
 bool BoardElement::isEdge()
@@ -31,32 +31,32 @@ bool BoardElement::isEdge()
 
 bool BoardElement::isTop()
 {
-    return (getRowPosition() == 0);
+    return (getRow() == 0);
 }
 
 bool BoardElement::isBotton()
 {
-    return (getRowPosition() == m_row - 1);
+    return (getRow() == m_rows - 1);
 }
 
 bool BoardElement::isLeft()
 {
-    return (getColumnPosition() == 0);
+    return (getColumn() == 0);
 }
 
 bool BoardElement::isRight()
 {
-    return (getColumnPosition() == m_column - 1);
+    return (getColumn() == m_columns - 1);
 }
 
 int BoardElement::getTopIndex()
 {
-    return m_index - m_column;
+    return m_index - m_columns;
 }
 
 int BoardElement::getBottonIndex()
 {
-    return m_index + m_column;
+    return m_index + m_columns;
 }
 
 int BoardElement::getLeftIndex()
@@ -157,12 +157,10 @@ Board::Board(const int rows, const int columns)
 {
     Q_ASSERT_X(m_rows <= 0 || m_columns <= 0, "Board Constructor", "Rows or Columns has a value zero or smaller");
 
-    auto index{0};
+    auto boardSize = rows * columns;
 
-    for (auto r = 1; r <= m_rows; ++r) {
-        for (auto c = 1; c <= m_columns; ++c) {
-            m_boardElements.push_back(BoardElement(index++, r, c));
-        }
+    for (auto i = 0; i < boardSize; ++i) {
+        m_boardElements.push_back(BoardElement(i, rows, columns));
     }
 }
 bool Board::isFull()

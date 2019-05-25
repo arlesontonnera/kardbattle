@@ -24,13 +24,13 @@ struct BoardElement
 
 private:
     int m_index;
-    int m_row;
-    int m_column;
+    int m_rows;
+    int m_columns;
 
     EdgePosition m_edgePosition;
 
-    int getRowPosition();
-    int getColumnPosition();
+    int getRow();
+    int getColumn();
 
     bool isEdge();
 
