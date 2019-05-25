@@ -14,7 +14,7 @@ enum class EdgePosition : int {
 
 struct BoardElement
 {
-    BoardElement(const int index, const int rowPosition, const int columnPosition);
+    BoardElement(const int index, const int rows, const int columns);
 
     // Ainda estou em dúvida se será necessário esse m_isPlaced, pois o card é um ptr e inicia como nullptr
     // Então podemos verificar se a posição X a card == nullptr assim não haveria necessidade da variável bool
