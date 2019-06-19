@@ -1,10 +1,10 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include <vector>
-#include <memory>
+#include "card.h"
 
-class Card;
+#include <vector>
+
 
 enum class EdgePosition : int {
     TopLeft,      TopMiddle,      TopRight,
@@ -16,18 +16,16 @@ struct BoardElement
 {
     BoardElement(const int index, const int rows, const int columns);
 
-    // Ainda estou em dúvida se será necessário esse m_isPlaced, pois o card é um ptr e inicia como nullptr
-    // Então podemos verificar se a posição X a card == nullptr assim não haveria necessidade da variável bool
-    bool m_isPlaced;
-    std::shared_ptr<Card> m_card;
-    std::vector<int> m_adjacents;
+    void setCard(const Card &card);
 
 private:
+    Card m_card;
+    EdgePosition m_edgePosition;
+    std::vector<int> m_adjacents;
+
     int m_index;
     int m_rows;
     int m_columns;
-
-    EdgePosition m_edgePosition;
 
     int getRow();
     int getColumn();
@@ -54,6 +52,7 @@ public:
     Board(const int rows, const int columns);
 
     bool isFull();
+    void setBoardElement(const int index, const Card &card);
 private:
     int m_rows;
     int m_columns;

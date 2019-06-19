@@ -1,8 +1,9 @@
-#include <QCoreApplication>
+#include "deck.h"
+#include "board.h"
 
+#include <QCoreApplication>
 #include <iostream>
 
-#include "deck.h"
 
 int main(int argc, char *argv[])
 {
@@ -18,7 +19,6 @@ int main(int argc, char *argv[])
         m_deck.pop();
     }
 
-
-//    return a.exec(); // Main loop
+    //    return a.exec(); // Main loop
     return 0;
 }

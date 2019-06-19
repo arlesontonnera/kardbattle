@@ -5,13 +5,16 @@
 #include <cmath>
 
 BoardElement::BoardElement(const int index, const int rows, const int columns)
-    : m_isPlaced(false)
-    , m_card(nullptr)
-    , m_index(index)
+    : m_index(index)
     , m_rows(rows)
     , m_columns(columns)
 {
     makeAdjacents();
+}
+
+void BoardElement::setCard(const Card &card)
+{
+    m_card = card;
 }
 
 int BoardElement::getRow()
@@ -166,4 +169,9 @@ Board::Board(const int rows, const int columns)
 bool Board::isFull()
 {
     return (m_boardElements.size() >= static_cast<size_t>(m_rows * m_columns));
+}
+
+void Board::setBoardElement(const int index, const Card &card)
+{
+    m_boardElements[index].setCard(card);
 }
