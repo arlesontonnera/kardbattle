@@ -1,8 +1,8 @@
-#include "card.h"
-
 #include <random>
 #include <iostream>
 #include <algorithm>
+
+#include "card.h"
 
 Card::Card()
     :Card(0, AttackDirection{}, Card_element::None, Card_status::None)
@@ -119,7 +119,8 @@ Card_element Card::getRandomElement()
                     Card_element::Ice
                   :
                     (static_cast<Card_element>(element) == Card_element::Poison) ?
-                        Card_element::Poison : Card_element::None;
+                        Card_element::Poison
+                      : Card_element::None;
     return randomElement;
 }
 

@@ -1,24 +1,30 @@
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
+
 #include "deck.h"
 #include "board.h"
 
-#include <QCoreApplication>
-#include <iostream>
-
-
 int main(int argc, char *argv[])
 {
-    QCoreApplication a(argc, argv);
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
+    QGuiApplication app(argc, argv);
+    QQmlApplicationEngine engine;
 
-    Deck m_deck(15);
+    //qmlRegisterType<Deck>("Qml.Cpp_Deck",1,0,"Cpp_Deck");
 
-    auto deckSize = m_deck.getSize();
+    Deck cpp_Deck;
+    engine.rootContext()->setContextProperty("cpp_Deck", &cpp_Deck);
 
-    for (size_t i = 0; i < deckSize; ++i) {
-        std::cout << m_deck.top();
-        m_deck.pop();
-    }
+    Board cpp_Board(4,4);
+    cpp_Board.setBoardElement(0, cpp_Deck.getTop());
+    cpp_Board.setBoardElement(2, cpp_Deck.getTop());
+    engine.rootContext()->setContextProperty("cpp_Board", &cpp_Board);
 
-    //    return a.exec(); // Main loop
-    return 0;
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    if (engine.rootObjects().isEmpty())
+        return -1;
+
+    return app.exec();
 }

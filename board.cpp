@@ -1,8 +1,7 @@
-#include "board.h"
-
 #include <QtGlobal>
-
 #include <cmath>
+
+#include "board.h"
 
 BoardElement::BoardElement(const int index, const int rows, const int columns)
     : m_index(index)
@@ -154,6 +153,61 @@ void BoardElement::makeAdjacents()
     }
 }
 
+void Board::getPower(const int index)
+{
+    emit powerChanged(m_boardElements.at(index).m_card.getPower());
+}
+
+//int Board::getElement(const int index) const
+//{
+//    return static_cast<int>(m_boardElements.at(index).m_card.getElement());
+//}
+
+//int Board::getStatus(const int index) const
+//{
+//    return static_cast<int>(m_boardElements.at(index).m_card.getStatus());
+//}
+
+//bool Board::isAttackDirectionTop(const int index) const
+//{
+//    for (const auto &i : m_boardElements.at(index).m_card.getAttackDirection()) {
+//        if (i == Card_attack_direction::Top) {
+//            return true;
+//        }
+//    }
+//    return false;
+//}
+
+//bool Board::isAttackDirectionRight(const int index) const
+//{
+//    for (const auto &i : m_boardElements.at(index).m_card.getAttackDirection()) {
+//        if (i == Card_attack_direction::Right) {
+//            return true;
+//        }
+//    }
+//    return false;
+//}
+
+//bool Board::isAttackDirectionBottom(const int index) const
+//{
+//    for (const auto &i : m_boardElements.at(index).m_card.getAttackDirection()) {
+//        if (i == Card_attack_direction::Bottom) {
+//            return true;
+//        }
+//    }
+//    return false;
+//}
+
+//bool Board::isAttackDirectionLeft(const int index) const
+//{
+//    for (const auto &i : m_boardElements.at(index).m_card.getAttackDirection()) {
+//        if (i == Card_attack_direction::Left) {
+//            return true;
+//        }
+//    }
+//    return false;
+//}
+
 Board::Board(const int rows, const int columns)
     : m_rows(rows)
     , m_columns(columns)
@@ -166,12 +220,13 @@ Board::Board(const int rows, const int columns)
         m_boardElements.push_back(BoardElement(i, rows, columns));
     }
 }
+
 bool Board::isFull()
 {
     return (m_boardElements.size() >= static_cast<size_t>(m_rows * m_columns));
 }
 
-void Board::setBoardElement(const int index, const Card &card)
+void Board::setBoardElement(const int index, const Card card)
 {
-    m_boardElements[index].setCard(card);
+    m_boardElements.at(index).setCard(card);
 }

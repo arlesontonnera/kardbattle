@@ -1,10 +1,10 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "card.h"
-
+#include <QObject>
 #include <vector>
 
+#include "card.h"
 
 enum class EdgePosition : int {
     TopLeft,      TopMiddle,      TopRight,
@@ -14,18 +14,11 @@ enum class EdgePosition : int {
 
 struct BoardElement
 {
+    friend class Board;
+private:
     BoardElement(const int index, const int rows, const int columns);
 
     void setCard(const Card &card);
-
-private:
-    Card m_card;
-    EdgePosition m_edgePosition;
-    std::vector<int> m_adjacents;
-
-    int m_index;
-    int m_rows;
-    int m_columns;
 
     int getRow();
     int getColumn();
@@ -44,15 +37,38 @@ private:
 
     void setEdgePosition();
     void makeAdjacents();
+
+    Card m_card;
+    EdgePosition m_edgePosition;
+    std::vector<int> m_adjacents;
+    int m_index;
+    int m_rows;
+    int m_columns;
 };
 
-class Board
+class Board : public QObject
 {
+    Q_OBJECT
+
+signals:
+
+    void powerChanged(const int power);
+
+public slots:
+    void getPower(const int index);
+//    int getElement(const int index) const;
+//    int getStatus(const int index) const;
+//    bool isAttackDirectionTop(const int index) const;
+//    bool isAttackDirectionRight(const int index) const;
+//    bool isAttackDirectionBottom(const int index) const;
+//    bool isAttackDirectionLeft(const int index) const;
+
 public:
     Board(const int rows, const int columns);
 
     bool isFull();
-    void setBoardElement(const int index, const Card &card);
+    void setBoardElement(const int index, const Card card);
+
 private:
     int m_rows;
     int m_columns;
